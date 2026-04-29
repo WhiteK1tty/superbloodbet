@@ -132,7 +132,28 @@ async function saveEvent() {
     }
 }
 
-function showResolve(eventId, options) {
+function showProfile() { showToast('Профиль администратора'); }
+function showSettings() { showToast('Настройки в разработке'); }
+
+async function doPayout() {
+    const username = document.getElementById('payout-username').value.replace('@','').trim();
+    const amount   = parseFloat(document.getElementById('payout-amount').value);
+    const comment  = document.getElementById('payout-comment').value.trim();
+    if (!username || isNaN(amount) || amount <= 0) { showToast('Заполни поля'); return; }
+
+    try {
+        const res = await fetch(`${API}/api/admin/give`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, amount })
+        });
+        const data = await res.json();
+        showToast(data.message || data.error);
+        document.getElementById('payout-username').value = '';
+        document.getElementById('payout-amount').value = '';
+        document.getElementById('payout-comment').value = '';
+    } catch (e) { showToast('Ошибка соединения'); }
+}
     const choice = prompt(`Победитель для "${eventId}"?\n\nВарианты:\n${options.join('\n')}`);
     if (!choice) return;
     resolveEvent(eventId, choice.trim());

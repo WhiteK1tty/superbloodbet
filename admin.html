@@ -7,40 +7,101 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="style.css">
     <style>
-        body { background: #b03030; }
+        html, body { height: 100%; margin: 0; }
 
-        .admin-menu {
+        body {
+            background: #b03030;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            padding: 30px 20px;
+            min-height: 100vh;
+        }
+
+        /* Хедер */
+        .admin-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .admin-header-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+
+        .admin-header-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .admin-header-badge {
+            font-family: 'Oswald', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.85);
+            letter-spacing: 1px;
+        }
+
+        .header-icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .header-icon-btn:hover { opacity: 1; }
+
+        /* Меню */
+        .admin-menu {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: 24px 20px;
         }
 
         .admin-menu-btn {
-            width: 100%;
-            padding: 22px 24px;
+            flex: 1;
+            min-height: 64px;
+            padding: 0 24px;
             border-radius: 18px;
             border: none;
             background: #7a1a1a;
             color: #fff;
             font-family: 'Oswald', sans-serif;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 600;
             letter-spacing: 1px;
             cursor: pointer;
             text-align: center;
             transition: background 0.2s, transform 0.1s;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .admin-menu-btn:active { transform: scale(0.97); }
         .admin-menu-btn:hover { background: #8a2020; }
 
+        /* Панели */
         .admin-panel {
             display: none;
+            flex: 1;
             padding: 14px;
-            padding-bottom: 20px;
+            overflow-y: auto;
         }
+
         .admin-panel.active { display: block; }
 
         .back-btn {
@@ -49,7 +110,7 @@
             gap: 6px;
             background: none;
             border: none;
-            color: rgba(255,255,255,0.8);
+            color: rgba(255,255,255,0.85);
             font-family: 'Rajdhani', sans-serif;
             font-size: 16px;
             font-weight: 700;
@@ -93,16 +154,31 @@
 </head>
 <body>
 
-<header>
-    <div class="header-title">BloodBet</div>
-    <div style="flex:1"></div>
-    <div class="admin-badge">Админ</div>
-</header>
+<!-- Хедер -->
+<div class="admin-header">
+    <div class="admin-header-title">BloodBet</div>
+    <div class="admin-header-right">
+        <button class="header-icon-btn" onclick="showProfile()" title="Профиль">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+            </svg>
+        </button>
+        <div class="admin-header-badge">Админ</div>
+        <button class="header-icon-btn" onclick="showSettings()" title="Настройки">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+        </button>
+    </div>
+</div>
 
 <!-- Главное меню -->
 <div id="menu" class="admin-menu">
     <button class="admin-menu-btn" onclick="showPanel('matches')">Создать матч</button>
     <button class="admin-menu-btn" onclick="showPanel('currency')">Выдать валюту</button>
+    <button class="admin-menu-btn" onclick="showPanel('payout')">Выплата</button>
     <button class="admin-menu-btn" onclick="showPanel('ban')">Забанить юзера</button>
     <button class="admin-menu-btn" onclick="showPanel('events')">Все матчи</button>
 </div>
@@ -144,6 +220,18 @@
         <div class="field"><label>Username игрока</label><input type="text" id="take-username" placeholder="@username"></div>
         <div class="field"><label>Сумма (₽)</label><input type="number" id="take-amount" placeholder="500"></div>
         <button class="btn" onclick="takeBalance()" style="background:linear-gradient(270deg,#4a0000,#880000,#4a0000)">Забрать</button>
+    </div>
+</div>
+
+<!-- Выплата -->
+<div id="panel-payout" class="admin-panel">
+    <button class="back-btn" onclick="showMenu()">‹ Назад</button>
+    <div class="section">
+        <div class="section-title">Выплата выигрыша</div>
+        <div class="field"><label>Username игрока</label><input type="text" id="payout-username" placeholder="@username"></div>
+        <div class="field"><label>Сумма выплаты (₽)</label><input type="number" id="payout-amount" placeholder="1000"></div>
+        <div class="field"><label>Комментарий (необязательно)</label><input type="text" id="payout-comment" placeholder="Выигрыш за матч..."></div>
+        <button class="btn" onclick="doPayout()">Выплатить</button>
     </div>
 </div>
 
