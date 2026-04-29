@@ -1,0 +1,394 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Oswald:wght@400;600;700&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --bg:      #b03030;
+    --bg-dark: #8a2020;
+    --card:    rgba(240,220,220,0.18);
+    --card-solid: #d4a0a0;
+    --white:   #ffffff;
+    --red-btn: #7a1a1a;
+    --red-btn-active: #5a0f0f;
+    --text-dim: rgba(255,255,255,0.6);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+body {
+    font-family: 'Rajdhani', sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* ─── HEADER ─────────────────────────────────── */
+header {
+    padding: 16px 18px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.header-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.header-sub {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 1px;
+    text-transform: lowercase;
+}
+
+/* ─── TABS ───────────────────────────────────── */
+.tabs {
+    display: flex;
+    gap: 8px;
+    padding: 14px 16px 10px;
+}
+
+.tab {
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: var(--red-btn);
+    color: rgba(255,255,255,0.75);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+}
+
+.tab.active {
+    background: var(--red-btn-active);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* ─── CONTENT ────────────────────────────────── */
+.content {
+    flex: 1;
+    padding: 10px 14px;
+    padding-bottom: 70px;
+    animation: fadeIn 0.3s ease;
+}
+
+.page { display: none; }
+.page.active { display: block; animation: fadeIn 0.3s ease; }
+
+/* ─── BET OF DAY CARD ────────────────────────── */
+.bet-day-card {
+    background: rgba(255,255,255,0.15);
+    border-radius: 16px;
+    padding: 20px 16px 16px;
+    margin-bottom: 12px;
+    backdrop-filter: blur(4px);
+}
+
+.bet-day-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    line-height: 1.1;
+}
+
+.teams-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+}
+
+.team-logo {
+    width: 70px; height: 70px;
+    background: rgba(0,0,0,0.35);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.team-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+
+.team-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.8);
+    text-align: center;
+}
+
+.team-coef {
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #ff6666;
+}
+
+.vs-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+    gap: 4px;
+}
+
+.vs-text {
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.4);
+}
+
+/* ─── EVENT CARD ─────────────────────────────── */
+.section-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.9);
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    padding: 0 2px;
+}
+
+.event-card {
+    background: rgba(255,255,255,0.13);
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 10px;
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.3s ease;
+    transition: background 0.2s;
+}
+
+.event-card:hover { background: rgba(255,255,255,0.18); }
+
+.event-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.event-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    flex: 1;
+}
+
+.event-live {
+    background: rgba(0,0,0,0.25);
+    border-radius: 5px;
+    padding: 3px 8px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #ffaaaa;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 12px;
+}
+
+.option-btn {
+    flex: 1;
+    min-width: 70px;
+    padding: 9px 6px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(0,0,0,0.2);
+    color: rgba(255,255,255,0.75);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    user-select: none;
+}
+
+.option-btn:hover {
+    background: rgba(0,0,0,0.3);
+    color: #fff;
+}
+
+.option-btn.selected {
+    background: rgba(0,0,0,0.45);
+    border-color: rgba(255,255,255,0.6);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.bet-row { display: flex; gap: 8px; align-items: center; }
+.amount-wrap { flex: 1; }
+
+.amount-input {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(0,0,0,0.2);
+    color: #fff;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    transition: border-color 0.2s;
+}
+
+.amount-input:focus {
+    outline: none;
+    border-color: rgba(255,255,255,0.5);
+    background: rgba(0,0,0,0.3);
+}
+
+.amount-input::placeholder { color: rgba(255,255,255,0.35); }
+
+.bet-btn {
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(0,0,0,0.35);
+    color: #fff;
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.bet-btn:hover { background: rgba(0,0,0,0.5); }
+.bet-btn:active { transform: scale(0.97); }
+.bet-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ─── MY BETS ────────────────────────────────── */
+.my-bet-item {
+    background: rgba(255,255,255,0.13);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    animation: fadeIn 0.3s ease;
+    border-left: 3px solid rgba(255,255,255,0.3);
+}
+
+.bet-info { flex: 1; min-width: 0; }
+.my-bet-event { font-size: 11px; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.my-bet-choice { font-family: 'Oswald', sans-serif; font-size: 16px; font-weight: 600; color: #fff; }
+.my-bet-amount { font-family: 'Oswald', sans-serif; font-size: 20px; font-weight: 700; color: #fff; flex-shrink: 0; }
+
+/* ─── BOTTOM NAV ─────────────────────────────── */
+.bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 58px;
+    background: var(--bg-dark);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    z-index: 100;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    color: rgba(255,255,255,0.5);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    padding: 6px 12px;
+}
+
+.nav-btn:hover { color: rgba(255,255,255,0.9); }
+.nav-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+
+/* ─── BALANCE BAR ────────────────────────────── */
+.balance-bar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 6px 16px 0;
+    gap: 6px;
+}
+
+.balance-label { font-size: 12px; color: rgba(255,255,255,0.5); }
+.balance-value { font-family: 'Oswald', sans-serif; font-size: 16px; font-weight: 600; color: #fff; }
+
+/* ─── EMPTY ──────────────────────────────────── */
+.empty { text-align: center; padding: 44px 20px; }
+.empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.3; display: block; }
+.empty-text { color: rgba(255,255,255,0.3); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
+
+/* ─── TOAST ──────────────────────────────────── */
+.toast {
+    position: fixed;
+    bottom: 70px;
+    left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    background: rgba(0,0,0,0.75);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 999;
+    max-width: 85%;
+    text-align: center;
+    backdrop-filter: blur(10px);
+}
+
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }

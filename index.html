@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodBet</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <div class="header-title">BLOODBET</div>
+    <div class="header-sub">ставки</div>
+</header>
+
+<div class="balance-bar">
+    <span class="balance-label">Баланс:</span>
+    <span class="balance-value" id="balance-value">0 ₽</span>
+</div>
+
+<div class="tabs">
+    <button class="tab active" onclick="switchTab('day')">ставки дня</button>
+    <button class="tab" onclick="switchTab('events')">все ставки</button>
+    <button class="tab" onclick="switchTab('mybets')">мои ставки</button>
+</div>
+
+<div class="content">
+    <div id="page-day" class="page active"></div>
+    <div id="page-events" class="page"></div>
+    <div id="page-mybets" class="page"></div>
+</div>
+
+<nav class="bottom-nav">
+    <button class="nav-btn" onclick="showProfile()">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        Профиль
+    </button>
+    <button class="nav-btn" onclick="showSettings()">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        Настройки
+    </button>
+</nav>
+
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
