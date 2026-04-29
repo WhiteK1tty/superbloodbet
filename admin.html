@@ -6,57 +6,167 @@
     <title>BloodBet Admin</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="style.css">
+    <style>
+        body { background: #b03030; }
+
+        .admin-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 30px 20px;
+        }
+
+        .admin-menu-btn {
+            width: 100%;
+            padding: 22px 24px;
+            border-radius: 18px;
+            border: none;
+            background: #7a1a1a;
+            color: #fff;
+            font-family: 'Oswald', sans-serif;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+        }
+
+        .admin-menu-btn:active { transform: scale(0.97); }
+        .admin-menu-btn:hover { background: #8a2020; }
+
+        .admin-panel {
+            display: none;
+            padding: 14px;
+            padding-bottom: 20px;
+        }
+        .admin-panel.active { display: block; }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.8);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 0 0 16px 0;
+            letter-spacing: 1px;
+        }
+
+        .ban-item {
+            background: rgba(0,0,0,0.25);
+            border-radius: 10px;
+            padding: 12px 14px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ban-item-name {
+            font-family: 'Oswald', sans-serif;
+            font-size: 15px;
+            color: #fff;
+        }
+
+        .unban-btn {
+            padding: 5px 12px;
+            border-radius: 7px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: transparent;
+            color: rgba(255,255,255,0.7);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+
+        .unban-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
+    </style>
 </head>
 <body>
 
 <header>
-    <div class="header-title">ADMIN</div>
-    <div class="header-sub">управление</div>
+    <div class="header-title">BloodBet</div>
     <div style="flex:1"></div>
-    <div class="admin-badge">ADMIN</div>
+    <div class="admin-badge">Админ</div>
 </header>
 
-<div style="padding: 14px; padding-bottom: 20px;">
-
-    <!-- Создать событие -->
-    <div class="section">
-        <div class="section-title">Создать событие</div>
-        <div class="field">
-            <label>ID события</label>
-            <input type="text" id="eventId" placeholder="match1">
-        </div>
-        <div class="field">
-            <label>Название</label>
-            <input type="text" id="eventTitle" placeholder="Спартак vs ЦСКА">
-        </div>
-        <div class="field">
-            <label>Варианты (каждый с новой строки)</label>
-            <textarea id="eventOptions" placeholder="Спартак&#10;ЦСКА&#10;Ничья"></textarea>
-        </div>
-        <button class="btn" onclick="createEvent()">Создать событие</button>
-    </div>
-
-    <!-- Все события -->
-    <div class="section">
-        <div class="section-title">Все события</div>
-        <div id="events-list">
-            <div class="empty"><span class="empty-text">Загрузка...</span></div>
-        </div>
-    </div>
-
+<!-- Главное меню -->
+<div id="menu" class="admin-menu">
+    <button class="admin-menu-btn" onclick="showPanel('matches')">Создать матч</button>
+    <button class="admin-menu-btn" onclick="showPanel('currency')">Выдать валюту</button>
+    <button class="admin-menu-btn" onclick="showPanel('ban')">Забанить юзера</button>
+    <button class="admin-menu-btn" onclick="showPanel('events')">Все матчи</button>
 </div>
 
-<!-- Модалка редактирования -->
-<div id="edit-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:200;overflow-y:auto;padding:16px;">
-    <div style="background:#1a0a0a;border-radius:16px;padding:18px;border:1px solid rgba(180,0,0,0.4);">
-        <div class="section-title" id="edit-title">Редактировать событие</div>
-
-        <div id="edit-fields"></div>
-
-        <div style="display:flex;gap:8px;margin-top:8px;">
-            <button class="btn" onclick="saveEvent()" style="flex:1">Сохранить</button>
-            <button class="btn" onclick="closeModal()" style="flex:1;background:rgba(60,60,60,0.8);animation:none;">Отмена</button>
+<!-- Создать матч -->
+<div id="panel-matches" class="admin-panel">
+    <button class="back-btn" onclick="showMenu()">‹ Назад</button>
+    <div class="section">
+        <div class="section-title">Создать матч</div>
+        <div class="field"><label>ID матча</label><input type="text" id="eventId" placeholder="match1"></div>
+        <div class="field"><label>Название</label><input type="text" id="eventTitle" placeholder="Спартак vs ЦСКА"></div>
+        <div class="field"><label>Варианты (каждый с новой строки)</label><textarea id="eventOptions" placeholder="Спартак&#10;ЦСКА&#10;Ничья"></textarea></div>
+        <div class="field"><label>Коэффициент 1 варианта</label><input type="number" step="0.01" id="odd1" placeholder="1.85"></div>
+        <div class="field"><label>Коэффициент 2 варианта</label><input type="number" step="0.01" id="odd2" placeholder="2.10"></div>
+        <div class="field"><label>URL логотипа 1 команды</label><input type="text" id="logo1" placeholder="https://..."></div>
+        <div class="field"><label>URL логотипа 2 команды</label><input type="text" id="logo2" placeholder="https://..."></div>
+        <div class="field">
+            <label>Ставка дня</label>
+            <select id="featured" style="width:100%;padding:11px 14px;border-radius:9px;border:1px solid rgba(100,0,6,0.5);background:rgba(4,0,0,0.95);color:#ff8888;font-size:15px;font-family:'Rajdhani',sans-serif;">
+                <option value="false">Нет</option>
+                <option value="true">Да ⭐</option>
+            </select>
         </div>
+        <button class="btn" onclick="createEvent()">Создать матч</button>
+    </div>
+</div>
+
+<!-- Выдать валюту -->
+<div id="panel-currency" class="admin-panel">
+    <button class="back-btn" onclick="showMenu()">‹ Назад</button>
+    <div class="section">
+        <div class="section-title">Выдать валюту</div>
+        <div class="field"><label>Username игрока</label><input type="text" id="give-username" placeholder="@username"></div>
+        <div class="field"><label>Сумма (₽)</label><input type="number" id="give-amount" placeholder="500"></div>
+        <button class="btn" onclick="giveBalance()">Выдать</button>
+    </div>
+    <div class="section">
+        <div class="section-title">Забрать валюту</div>
+        <div class="field"><label>Username игрока</label><input type="text" id="take-username" placeholder="@username"></div>
+        <div class="field"><label>Сумма (₽)</label><input type="number" id="take-amount" placeholder="500"></div>
+        <button class="btn" onclick="takeBalance()" style="background:linear-gradient(270deg,#4a0000,#880000,#4a0000)">Забрать</button>
+    </div>
+</div>
+
+<!-- Забанить -->
+<div id="panel-ban" class="admin-panel">
+    <button class="back-btn" onclick="showMenu()">‹ Назад</button>
+    <div class="section">
+        <div class="section-title">Забанить юзера</div>
+        <div class="field"><label>Username</label><input type="text" id="ban-username" placeholder="@username"></div>
+        <button class="btn" onclick="banUser()" style="background:linear-gradient(270deg,#4a0000,#880000,#4a0000)">Забанить</button>
+    </div>
+    <div class="section">
+        <div class="section-title">Забаненные</div>
+        <div id="ban-list"><div class="empty"><span class="empty-text">Нет забаненных</span></div></div>
+    </div>
+</div>
+
+<!-- Все матчи -->
+<div id="panel-events" class="admin-panel">
+    <button class="back-btn" onclick="showMenu()">‹ Назад</button>
+    <div class="section">
+        <div class="section-title">Все матчи</div>
+        <div id="events-list"><div class="empty"><span class="empty-text">Загрузка...</span></div></div>
     </div>
 </div>
 
