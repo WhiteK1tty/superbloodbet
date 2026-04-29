@@ -56,24 +56,29 @@ header {
 
 /* ─── TABS ───────────────────────────────────── */
 .tabs {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 8px;
-    padding: 14px 16px 10px;
+    padding: 10px 14px;
 }
 
 .tab {
-    padding: 8px 16px;
+    padding: 9px 6px;
     border-radius: 20px;
     background: var(--red-btn);
     color: rgba(255,255,255,0.75);
     font-family: 'Rajdhani', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
     border: none;
-    white-space: nowrap;
+    text-align: center;
     letter-spacing: 0.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .tab.active {
