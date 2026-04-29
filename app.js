@@ -167,9 +167,9 @@ function renderMyBets() {
     `).join('');
 }
 
-function switchTab(tab) {
+function switchTab(tab, el) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    event.target.classList.add('active');
+    if (el) el.classList.add('active');
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(`page-${tab}`).classList.add('active');
     if (tab === 'mybets') renderMyBets();
@@ -177,6 +177,16 @@ function switchTab(tab) {
 
 function showProfile() { showToast('Профиль: @' + username); }
 function showSettings() { showToast('Настройки в разработке'); }
+
+function requestDeposit() {
+    tg.showPopup({
+        title: 'Пополнение баланса',
+        message: 'Для пополнения баланса обратитесь к администратору.\n\nВаш username: @' + username,
+        buttons: [
+            { id: 'copy', type: 'default', text: 'Понятно' }
+        ]
+    });
+}
 
 function showToast(msg) {
     const toast = document.getElementById('toast');
