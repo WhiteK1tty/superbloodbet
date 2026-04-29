@@ -10,18 +10,15 @@
 <body>
 
 <header>
-    <div class="logo">
-        <img src="logo.png" alt="BloodBet" onerror="this.parentElement.innerHTML='<div class=logo-fallback><div class=logo-drop></div></div>'">
-    </div>
-    <div class="header-info">
-        <div class="header-title">ADMIN</div>
-        <div class="header-sub">BloodBet · Управление</div>
-    </div>
+    <div class="header-title">ADMIN</div>
+    <div class="header-sub">управление</div>
+    <div style="flex:1"></div>
     <div class="admin-badge">ADMIN</div>
 </header>
 
-<div style="padding: 14px;">
+<div style="padding: 14px; padding-bottom: 20px;">
 
+    <!-- Создать событие -->
     <div class="section">
         <div class="section-title">Создать событие</div>
         <div class="field">
@@ -29,7 +26,7 @@
             <input type="text" id="eventId" placeholder="match1">
         </div>
         <div class="field">
-            <label>Название события</label>
+            <label>Название</label>
             <input type="text" id="eventTitle" placeholder="Спартак vs ЦСКА">
         </div>
         <div class="field">
@@ -39,15 +36,28 @@
         <button class="btn" onclick="createEvent()">Создать событие</button>
     </div>
 
+    <!-- Все события -->
     <div class="section">
         <div class="section-title">Все события</div>
         <div id="events-list">
-            <div class="empty">
-                <span class="empty-text">Загрузка...</span>
-            </div>
+            <div class="empty"><span class="empty-text">Загрузка...</span></div>
         </div>
     </div>
 
+</div>
+
+<!-- Модалка редактирования -->
+<div id="edit-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:200;overflow-y:auto;padding:16px;">
+    <div style="background:#1a0a0a;border-radius:16px;padding:18px;border:1px solid rgba(180,0,0,0.4);">
+        <div class="section-title" id="edit-title">Редактировать событие</div>
+
+        <div id="edit-fields"></div>
+
+        <div style="display:flex;gap:8px;margin-top:8px;">
+            <button class="btn" onclick="saveEvent()" style="flex:1">Сохранить</button>
+            <button class="btn" onclick="closeModal()" style="flex:1;background:rgba(60,60,60,0.8);animation:none;">Отмена</button>
+        </div>
+    </div>
 </div>
 
 <div class="toast" id="toast"></div>

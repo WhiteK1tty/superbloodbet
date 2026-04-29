@@ -38,46 +38,60 @@ async function loadAllEvents() {
 function renderDayTab() {
     const container = document.getElementById('page-day');
     if (allEvents.length === 0) {
-        container.innerHTML = `
-            <div class="empty">
-                <span class="empty-icon">🩸</span>
-                <span class="empty-text">Нет активных событий</span>
-            </div>`;
+        container.innerHTML = `<div class="empty"><span class="empty-icon">🩸</span><span class="empty-text">Нет активных событий</span></div>`;
         return;
     }
 
-    // Первое событие как "ставка дня"
-    const featured = allEvents[0];
+    // Ищем featured событие, иначе берём первое
+    const featured = allEvents.find(e => e.featured) || allEvents[0];
     const opt1 = featured.options[0] || '';
     const opt2 = featured.options[1] || '';
+    const odd1 = featured.odds?.[opt1] ? `x${featured.odds[opt1]}` : '';
+    const odd2 = featured.odds?.[opt2] ? `x${featured.odds[opt2]}` : '';
+    const logo1 = featured.logos?.[opt1] || '';
+    const logo2 = featured.logos?.[opt2] || '';
 
     let html = `
-        <div class="bet-day-card">
-            <div class="bet-day-title">СТАВКА<br>ДНЯ</div>
-            <div class="teams-row">
-                <div class="team">
-                    <div class="team-logo"><div style="color:rgba(255,255,255,0.3);font-size:28px">?</div></div>
-                    <div class="team-name">${opt2}</div>
-                    <div class="team-coef">2. Команда</div>
+        <div class="featured-card">
+            <div class="featured-inner">
+                <div class="featured-team">
+                    <div class="featured-logo">
+                        ${logo2 ? `<img src="${logo2}" alt="${opt2}">` : '<div class="logo-placeholder"></div>'}
+                    </div>
+                    <div class="featured-name">${opt2}</div>
+                    <div class="featured-odd">${odd2}</div>
                 </div>
-                <div class="vs-block">
-                    <div class="vs-text">VS</div>
+                <div class="featured-center">
+                    <div class="featured-label">СТАВКА<br>ДНЯ</div>
+                    <button class="featured-bet-btn" onclick="openFeaturedBet('${featured.id}')">Поставить</button>
                 </div>
-                <div class="team">
-                    <div class="team-logo"><div style="color:rgba(255,255,255,0.3);font-size:28px">?</div></div>
-                    <div class="team-name">${opt1}</div>
-                    <div class="team-coef">1. Команда</div>
+                <div class="featured-team">
+                    <div class="featured-logo">
+                        ${logo1 ? `<img src="${logo1}" alt="${opt1}">` : '<div class="logo-placeholder"></div>'}
+                    </div>
+                    <div class="featured-name">${opt1}</div>
+                    <div class="featured-odd">${odd1}</div>
                 </div>
             </div>
         </div>`;
 
-    // Остальные как "ближайшие матчи"
-    if (allEvents.length > 0) {
+    // Остальные матчи
+    const others = allEvents.filter(e => e.id !== featured.id);
+    if (others.length > 0) {
         html += `<div class="section-title">Ближайшие матчи</div>`;
-        html += allEvents.map(e => renderEventCard(e)).join('');
+        html += others.map(e => renderEventCard(e)).join('');
     }
 
     container.innerHTML = html;
+}
+
+function openFeaturedBet(eventId) {
+    // Переключаемся на вкладку "все ставки" и скроллим к событию
+    switchTab('events', document.querySelectorAll('.tab')[1]);
+    setTimeout(() => {
+        const el = document.getElementById(`amount-${eventId}`);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
 }
 
 function renderEventsTab() {
